@@ -1,5 +1,3 @@
-'use client';
-
 import { FC, useMemo } from 'react';
 
 export interface Todo {
