@@ -1,19 +1,17 @@
-import { FC } from 'react';
-import TodoItem, { Todo } from '../TodoItem/TodoItem';
+import TodoItem from '../TodoItem/TodoItem';
 import { compareTodos } from '../../utilities/todo-list-utils';
+import { getTodos } from '../../data/todos';
 
-interface TodoListProps {
-  todos: Todo[];
-}
+async function TodoList(): Promise<JSX.Element> {
+  const todos = await getTodos();
 
-const TodoList: FC<TodoListProps> = ({ todos }) => {
   return (
     <ul className='flex flex-col w-1/2 gap-2'>
-      {todos?.toSorted(compareTodos).map((todo) => (
+      {todos.toSorted(compareTodos).map((todo) => (
         <TodoItem key={todo.id} {...todo} />
       ))}
     </ul>
   );
-};
+}
 
 export default TodoList;
