@@ -35,7 +35,6 @@ const TodoList = () => {
               return todo;
             })
           );
-        } else {
         }
 
         setIsLoading(false);
@@ -45,7 +44,7 @@ const TodoList = () => {
   );
 
   return (
-    <div className='relative w-1/2 min-h-36'>
+    <div className='relative sm:w-1/2 w-full min-h-36'>
       {todos && (
         <ul className='flex flex-col gap-2'>
           {todos.toSorted(compareTodos).map((todo) => (

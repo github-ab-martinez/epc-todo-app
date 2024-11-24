@@ -61,6 +61,6 @@ export const updateTodoStatus = async (
   } catch (error) {
     console.error(getErrorMessage(error));
 
-    return { status: 'failed' };
+    return { status: 'error' };
   }
 };
