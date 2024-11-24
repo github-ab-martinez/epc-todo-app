@@ -3,14 +3,13 @@
 import { getErrorMessage } from '@/modules/common/utils/exception-handling-utils';
 import { Todo } from '../components/TodoItem/TodoItem';
 
+const EPC_API_URL = process.env.EPC_API_URL || '';
 const EPC_API_KEY_NAME = process.env.EPC_API_KEY_NAME || '';
 const EPC_API_KEY_VALUE = process.env.EPC_API_KEY_VALUE || '';
 
 export const getTodos = async (): Promise<Todo[]> => {
-  const endpoint = process.env.GET_TODOS_ENDPOINT || '';
-
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(`${EPC_API_URL}/get`, {
       headers: {
         [EPC_API_KEY_NAME]: EPC_API_KEY_VALUE,
       },
@@ -29,19 +28,16 @@ export const getTodos = async (): Promise<Todo[]> => {
   } catch (error) {
     console.error(getErrorMessage(error));
 
-    // TODO: Handle empty state rendering
     return [];
   }
 };
 
-export const updateTodoStatus = async (
+export const updateTodo = async (
   id: string,
   isComplete: boolean
 ): Promise<{ status: string }> => {
-  const endpoint = process.env.PATCH_TODO_ENDPOINT || '';
-
   try {
-    const response = await fetch(`${endpoint}/${id}`, {
+    const response = await fetch(`${EPC_API_URL}/patch/${id}`, {
       body: JSON.stringify({
         isComplete,
       }),

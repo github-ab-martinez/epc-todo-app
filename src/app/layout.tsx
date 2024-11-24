@@ -27,8 +27,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh`}
       >
+        <header className='bg-slate-900 p-5 text-white'>
+          <h1 className='font-bold'>Todo App</h1>
+        </header>
         {children}
       </body>
     </html>
