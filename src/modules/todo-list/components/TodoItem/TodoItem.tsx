@@ -1,4 +1,7 @@
-import { FC, useMemo } from 'react';
+'use client';
+
+import { ChangeEvent, FC, useMemo } from 'react';
+import { updateTodoStatus } from '../../data/todos';
 
 export interface Todo {
   id: string;
@@ -24,6 +27,12 @@ const TodoItem: FC<Todo> = ({ id, description, isComplete, dueDate }) => {
     return dynamicStyles;
   }, [isComplete, dueDate]);
 
+  const handleStatusChange = async (evt: ChangeEvent<HTMLInputElement>) => {
+    const { status } = await updateTodoStatus(id, evt.target.checked);
+
+    console.log(status);
+  };
+
   return (
     <li className={`flex align-middle justify-between p-2 ${itemBgStyle}`}>
       <label
@@ -31,9 +40,10 @@ const TodoItem: FC<Todo> = ({ id, description, isComplete, dueDate }) => {
         htmlFor={`${id}-isComplete`}
       >
         <input
-          type='checkbox'
-          defaultChecked={isComplete}
           id={`${id}-isComplete`}
+          defaultChecked={isComplete}
+          onChange={handleStatusChange}
+          type='checkbox'
         />
         {description}
       </label>
