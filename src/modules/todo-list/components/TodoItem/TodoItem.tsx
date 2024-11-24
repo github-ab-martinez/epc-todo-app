@@ -1,4 +1,6 @@
-import { FC, useMemo } from 'react';
+'use client';
+
+import { ChangeEvent, FC, useMemo } from 'react';
 
 export interface Todo {
   id: string;
@@ -7,7 +9,17 @@ export interface Todo {
   dueDate: Date | null;
 }
 
-const TodoItem: FC<Todo> = ({ id, description, isComplete, dueDate }) => {
+interface TodoItemProps extends Todo {
+  onItemChange(evt: ChangeEvent<HTMLInputElement>, id: string): void;
+}
+
+const TodoItem: FC<TodoItemProps> = ({
+  id,
+  description,
+  isComplete,
+  dueDate,
+  onItemChange,
+}) => {
   const { itemBgStyle, descriptionStyle } = useMemo(() => {
     const dynamicStyles = {
       itemBgStyle: 'bg-gray-100',
@@ -31,9 +43,10 @@ const TodoItem: FC<Todo> = ({ id, description, isComplete, dueDate }) => {
         htmlFor={`${id}-isComplete`}
       >
         <input
-          type='checkbox'
-          defaultChecked={isComplete}
           id={`${id}-isComplete`}
+          defaultChecked={isComplete}
+          onChange={(evt) => onItemChange(evt, id)}
+          type='checkbox'
         />
         {description}
       </label>
