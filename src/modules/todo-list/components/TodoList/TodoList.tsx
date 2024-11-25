@@ -7,56 +7,46 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import LoadingOverlay from '@/modules/common/components/LoadingOverlay/LoadingOverlay';
 
 const TodoList = () => {
-  const [todos, setTodos] = useState<Todo[] | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
+  const [todos, setTodos] = useState<Todo[] | null>(null);
 
   useEffect(() => {
     getTodos().then((todos) => {
       setTodos(todos);
-      setIsLoading(false);
     });
   }, []);
 
-  const itemChangeHandler = useCallback(
-    (evt: ChangeEvent<HTMLInputElement>, id: string) => {
-      setIsLoading(true);
+  const onItemChangeSuccess = useCallback((id: string, isComplete: boolean) => {
+    setTodos(
+      (current) =>
+        current &&
+        current.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              isComplete,
+            };
+          }
 
-      updateTodo(id, evt.target.checked).then(({ status }) => {
-        if (status === 'success') {
-          setTodos((current) =>
-            current?.map((todo) => {
-              if (todo.id === id) {
-                return {
-                  ...todo,
-                  isComplete: evt.target.checked,
-                };
-              }
-
-              return todo;
-            })
-          );
-        }
-
-        setIsLoading(false);
-      });
-    },
-    []
-  );
+          return todo;
+        })
+    );
+  }, []);
 
   return (
     <div className='sm:w-1/2 w-full'>
-      {todos && (
+      {todos ? (
         <ul className='flex flex-col gap-2'>
           {todos.toSorted(compareTodos).map((todo) => (
             <TodoItem
               key={todo.id}
-              onItemChange={itemChangeHandler}
+              onItemChangeSuccess={onItemChangeSuccess}
               {...todo}
             />
           ))}
         </ul>
+      ) : (
+        <LoadingOverlay />
       )}
-      {isLoading && <LoadingOverlay />}
     </div>
   );
 };
