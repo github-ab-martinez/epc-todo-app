@@ -1,5 +1,4 @@
-const LoadingSpinner = () => {
-  // TODO: Implement spinner
+const LoadingOverlay = () => {
   return (
     <div className='absolute bg-gray-900 bg-opacity-45 flex flex-col justify-center top-0 left-0 w-full h-full text-center text-white'>
       Loading...
@@ -7,4 +6,4 @@ const LoadingSpinner = () => {
   );
 };
 
-export default LoadingSpinner;
+export default LoadingOverlay;

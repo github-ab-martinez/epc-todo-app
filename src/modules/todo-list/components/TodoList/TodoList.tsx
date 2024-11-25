@@ -2,9 +2,9 @@
 
 import TodoItem, { Todo } from '../TodoItem/TodoItem';
 import { compareTodos } from '../../utilities/todo-list-utils';
-import { getTodos, updateTodoStatus } from '../../data/todos';
+import { getTodos, updateTodo } from '../../data/todos';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import LoadingSpinner from '@/modules/common/components/LoadingSpinner/LoadingSpinner';
+import LoadingOverlay from '@/modules/common/components/LoadingOverlay/LoadingOverlay';
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Todo[] | undefined>(undefined);
@@ -21,7 +21,7 @@ const TodoList = () => {
     (evt: ChangeEvent<HTMLInputElement>, id: string) => {
       setIsLoading(true);
 
-      updateTodoStatus(id, evt.target.checked).then(({ status }) => {
+      updateTodo(id, evt.target.checked).then(({ status }) => {
         if (status === 'success') {
           setTodos((current) =>
             current?.map((todo) => {
@@ -44,7 +44,7 @@ const TodoList = () => {
   );
 
   return (
-    <div className='relative sm:w-1/2 w-full min-h-36'>
+    <div className='sm:w-1/2 w-full'>
       {todos && (
         <ul className='flex flex-col gap-2'>
           {todos.toSorted(compareTodos).map((todo) => (
@@ -56,7 +56,7 @@ const TodoList = () => {
           ))}
         </ul>
       )}
-      {isLoading && <LoadingSpinner />}
+      {isLoading && <LoadingOverlay />}
     </div>
   );
 };
