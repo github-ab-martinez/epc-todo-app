@@ -53,7 +53,7 @@ const TodoItem: FC<TodoItemProps> = ({
   };
 
   return (
-    <li className={`flex align-middle justify-between p-2 ${itemBgStyle}`}>
+    <li className={`flex items-center justify-between p-2 ${itemBgStyle}`}>
       <label
         className={`flex gap-3 items-center ${descriptionStyle}`}
         htmlFor={`${id}-isComplete`}
