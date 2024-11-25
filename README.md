@@ -1,6 +1,6 @@
 A simple todo app that loads a list of todos from a remote server.
 
-## Getting Started
+## To Run Locally
 
 1. Install dependencies.
 
