@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { updateTodo } from '../../data/todos';
 import TodoItemLoader from './TodoItemLoader';
 
@@ -40,12 +40,12 @@ const TodoItem: FC<TodoItemProps> = ({
     return dynamicStyles;
   }, [isComplete, dueDate]);
 
-  const handleItemChangeRequest = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleItemChangeRequest = () => {
     setIsProcessing(true);
 
-    updateTodo(id, !evt.target.checked).then(({ status }) => {
+    updateTodo(id, !isComplete).then(({ status }) => {
       if (status === 'success') {
-        onItemChangeSuccess(id, evt.target.checked);
+        onItemChangeSuccess(id, !isComplete);
       }
 
       setIsProcessing(false);
