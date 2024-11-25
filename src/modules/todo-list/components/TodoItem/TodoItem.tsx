@@ -12,16 +12,12 @@ export interface Todo {
 }
 
 interface TodoItemProps extends Todo {
-  onItemChangeSuccess(id: string, isComplete: boolean): void;
+  onItemChangeSuccess(updatedItem: Todo): void;
 }
 
-const TodoItem: FC<TodoItemProps> = ({
-  id,
-  description,
-  isComplete,
-  dueDate,
-  onItemChangeSuccess,
-}) => {
+const TodoItem: FC<TodoItemProps> = ({ onItemChangeSuccess, ...item }) => {
+  const { id, description, isComplete, dueDate } = item;
+
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { itemBgStyle, descriptionStyle } = useMemo(() => {
@@ -45,7 +41,10 @@ const TodoItem: FC<TodoItemProps> = ({
 
     updateTodo(id, !isComplete).then(({ status }) => {
       if (status === 'success') {
-        onItemChangeSuccess(id, !isComplete);
+        onItemChangeSuccess({
+          ...item,
+          isComplete: !isComplete,
+        });
       }
 
       setIsProcessing(false);

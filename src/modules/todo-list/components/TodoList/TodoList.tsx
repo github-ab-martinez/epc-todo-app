@@ -15,16 +15,13 @@ const TodoList = () => {
     });
   }, []);
 
-  const onItemChangeSuccess = (id: string, isComplete: boolean) => {
+  const onItemChangeSuccess = (updatedItem: Todo) => {
     setTodos(
       (current) =>
         current &&
         current.map((todo) => {
-          if (todo.id === id) {
-            return {
-              ...todo,
-              isComplete,
-            };
+          if (todo.id === updatedItem.id) {
+            return updatedItem;
           }
 
           return todo;
