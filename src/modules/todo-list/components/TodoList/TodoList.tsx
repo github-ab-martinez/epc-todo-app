@@ -3,7 +3,7 @@
 import TodoItem, { Todo } from '../TodoItem/TodoItem';
 import { compareTodos } from '../../utilities/todo-list-utils';
 import { getTodos } from '../../data/todos';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingOverlay from '@/modules/common/components/LoadingOverlay/LoadingOverlay';
 
 const TodoList = () => {
@@ -15,7 +15,7 @@ const TodoList = () => {
     });
   }, []);
 
-  const onItemChangeSuccess = useCallback((id: string, isComplete: boolean) => {
+  const onItemChangeSuccess = (id: string, isComplete: boolean) => {
     setTodos(
       (current) =>
         current &&
@@ -30,7 +30,7 @@ const TodoList = () => {
           return todo;
         })
     );
-  }, []);
+  };
 
   return (
     <div className='sm:w-1/2 w-full'>
