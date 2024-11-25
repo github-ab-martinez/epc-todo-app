@@ -2,8 +2,8 @@
 
 import TodoItem, { Todo } from '../TodoItem/TodoItem';
 import { compareTodos } from '../../utilities/todo-list-utils';
-import { getTodos, updateTodo } from '../../data/todos';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { getTodos } from '../../data/todos';
+import { useCallback, useEffect, useState } from 'react';
 import LoadingOverlay from '@/modules/common/components/LoadingOverlay/LoadingOverlay';
 
 const TodoList = () => {
