@@ -1,6 +1,8 @@
 'use client';
 
-import { ChangeEvent, FC, useMemo } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { updateTodo } from '../../data/todos';
+import TodoItemLoader from './TodoItemLoader';
 
 export interface Todo {
   id: string;
@@ -10,7 +12,7 @@ export interface Todo {
 }
 
 interface TodoItemProps extends Todo {
-  onItemChange(evt: ChangeEvent<HTMLInputElement>, id: string): void;
+  onItemChangeSuccess(id: string, isComplete: boolean): void;
 }
 
 const TodoItem: FC<TodoItemProps> = ({
@@ -18,8 +20,10 @@ const TodoItem: FC<TodoItemProps> = ({
   description,
   isComplete,
   dueDate,
-  onItemChange,
+  onItemChangeSuccess,
 }) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const { itemBgStyle, descriptionStyle } = useMemo(() => {
     const dynamicStyles = {
       itemBgStyle: 'bg-gray-100',
@@ -36,18 +40,35 @@ const TodoItem: FC<TodoItemProps> = ({
     return dynamicStyles;
   }, [isComplete, dueDate]);
 
+  const handleItemChangeRequest = (evt: ChangeEvent<HTMLInputElement>) => {
+    setIsProcessing(true);
+
+    updateTodo(id, !evt.target.checked).then(({ status }) => {
+      if (status === 'success') {
+        onItemChangeSuccess(id, evt.target.checked);
+      }
+
+      setIsProcessing(false);
+    });
+  };
+
   return (
-    <li className={`flex align-middle justify-between p-2 ${itemBgStyle}`}>
+    <li className={`flex items-center justify-between p-2 ${itemBgStyle}`}>
       <label
-        className={`flex gap-3 align-middle ${descriptionStyle}`}
+        className={`flex gap-3 items-center ${descriptionStyle}`}
         htmlFor={`${id}-isComplete`}
       >
-        <input
-          id={`${id}-isComplete`}
-          defaultChecked={isComplete}
-          onChange={(evt) => onItemChange(evt, id)}
-          type='checkbox'
-        />
+        {!isProcessing ? (
+          <input
+            className='w-4'
+            id={`${id}-isComplete`}
+            checked={isComplete}
+            onChange={handleItemChangeRequest}
+            type='checkbox'
+          />
+        ) : (
+          <TodoItemLoader />
+        )}
         {description}
       </label>
 
